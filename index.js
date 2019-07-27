@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 app.use(cors());
+app.set('port', 3000);
 
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
