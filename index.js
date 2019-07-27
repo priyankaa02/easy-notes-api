@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config({path: process.env.PWD + '/.env'});
+var cors = require('cors')
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -11,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
+app.use(cors());
 
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
