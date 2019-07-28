@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cors());
 app.options('*', cors());
-app.set('port', 3000);
 
 
 mongoose.connect(dbConfig.url, {
@@ -35,6 +34,6 @@ app.get('/', (req, res) => {
 
 // listen for requests
 require('./app/routes/note.routes.js')(app);
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server is listening on port 3000");
 });
