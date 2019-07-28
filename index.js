@@ -2,17 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config({path: process.env.PWD + '/.env'});
-var cors = require('cors')
+var cors = require('cors');
+var path = require('path');
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const app = express();
 
-// parse requests of content-type - application/x-www-form-urlencoded
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// parse requests of content-type - application/json
 app.use(bodyParser.json())
 app.use(cors());
 app.options('*', cors());
