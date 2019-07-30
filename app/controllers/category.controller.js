@@ -15,15 +15,31 @@ exports.create = (req, res) => {
         notes: req.body.notes || []
     });
 
+    Category.find({name : req.body.name}).exec(function(err, docs) {
+    if (docs.length){
+      return res.status(500).send({
+          message: "Name already exists"
+      });
+    } else {
+      category.save()
+      .then(data => {
+          res.send(data);
+      }).catch(err => {
+          res.status(500).send({
+              message: err.message || "Some error occurred while creating the category."
+          });
+      });
+    }
+  });
     // Save Note in the database
-    category.save()
-    .then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the category."
-        });
-    });
+    // category.save()
+    // .then(data => {
+    //     res.send(data);
+    // }).catch(err => {
+    //     res.status(500).send({
+    //         message: err.message || "Some error occurred while creating the category."
+    //     });
+    // });
 };
 
 // Retrieve and return all notes from the database.
@@ -61,7 +77,7 @@ exports.findOne = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  if(!req.body.notes) {
+  if(!req.body.noteId) {
         return res.status(400).send({
             message: "category content can not be empty"
         });
@@ -70,7 +86,7 @@ exports.update = (req, res) => {
     // Find note and update it with the request body
     Category.findByIdAndUpdate(req.params.categoryId, {
         name: req.body.name,
-        notes: req.body.notes
+        $push: { notes: req.body.noteId  }
     }, {new: true})
     .then(category => {
         if(!category) {
