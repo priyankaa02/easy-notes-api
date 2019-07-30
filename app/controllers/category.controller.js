@@ -86,7 +86,7 @@ exports.update = (req, res) => {
     // Find note and update it with the request body
     Category.findByIdAndUpdate(req.params.categoryId, {
         name: req.body.name,
-        $push: { notes: req.body.noteId  }
+        $addToSet: { notes: req.body.noteId  }
     }, {new: true})
     .then(category => {
         if(!category) {
