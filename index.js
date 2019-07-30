@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 
 // listen for requests
 require('./app/routes/note.routes.js')(app);
+require('./app/routes/category.routes.js')(app);
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server is listening on port 3000");
 });
