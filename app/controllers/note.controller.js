@@ -1,4 +1,5 @@
 const Note = require('../models/note.model.js');
+var ObjectID = require('mongodb').ObjectID;
 
 // Create and Save a new Note
 exports.create = (req, res) => {
@@ -58,6 +59,31 @@ exports.findOne = (req, res) => {
             message: "Error retrieving note with id " + req.params.noteId
         });
     });
+};
+
+exports.findMore = (req, res) => {
+  let list = req.body.notesIds.map(e => ObjectID(e));
+ setTimeout(function() {
+   Note.find({
+     _id: { $in: list }
+   }).then(notes => {
+       if(!notes) {
+           return res.status(404).send({
+               message: "Note not found with id "
+           });
+       }
+       res.send(notes);
+   }).catch(err => {
+       if(err.kind === 'ObjectId') {
+           return res.status(404).send({
+               message: "Note not found with id "
+           });
+       }
+       return res.status(500).send({
+           message: "Error retrieving note with id "
+       });
+   });
+ }, 1500);
 };
 
 // Update a note identified by the noteId in the request

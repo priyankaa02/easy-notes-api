@@ -10,6 +10,8 @@ module.exports = (app) => {
     // Retrieve a single Note with noteId
     app.get('/notes/:noteId', notes.findOne);
 
+    app.post('/notes/more', notes.findMore);
+
     // Update a Note with noteId
     app.put('/notes/:noteId', notes.update);
 
