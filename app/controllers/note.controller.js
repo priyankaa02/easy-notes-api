@@ -13,7 +13,8 @@ exports.create = (req, res) => {
     // Create a Note
     const note = new Note({
         title: req.body.title || "Untitled Note",
-        content: req.body.content
+        content: req.body.content,
+        categories: req.body.category || []
     });
 
     // Save Note in the database
@@ -63,7 +64,6 @@ exports.findOne = (req, res) => {
 
 exports.findMore = (req, res) => {
   let list = req.body.notesIds.map(e => ObjectID(e));
- setTimeout(function() {
    Note.find({
      _id: { $in: list }
    }).then(notes => {
@@ -83,7 +83,6 @@ exports.findMore = (req, res) => {
            message: "Error retrieving note with id "
        });
    });
- }, 1500);
 };
 
 // Update a note identified by the noteId in the request
@@ -97,7 +96,8 @@ exports.update = (req, res) => {
     // Find note and update it with the request body
     Note.findByIdAndUpdate(req.params.noteId, {
         title: req.body.title || "Untitled Note",
-        content: req.body.content
+        content: req.body.content,
+        $addToSet: { categories: req.body.categoryId  }
     }, {new: true})
     .then(note => {
         if(!note) {

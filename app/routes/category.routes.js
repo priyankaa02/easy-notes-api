@@ -13,6 +13,8 @@ module.exports = (app) => {
     // Update a categories with categoryId
     app.put('/categories/:categoryId', categories.update);
 
+    app.put('/categories/deletenote/:categoryId', categories.updateCategoryOnNoteDelete);
+
     // Delete a categories with categoryId
     app.delete('/categories/:categoryId', categories.delete);
 }
