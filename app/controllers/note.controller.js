@@ -139,3 +139,26 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+exports.updateNotOnCategoryDelete = (req, res) => {
+  Note.findByIdAndUpdate(req.params.noteId, {
+      $pull: { categories: req.body.categoryId }
+  }, {new: true})
+  .then(note => {
+      if(!note) {
+          return res.status(404).send({
+              message: "note not found with id " + req.params.noteId
+          });
+      }
+      res.send(note);
+  }).catch(err => {
+      if(err.kind === 'ObjectId') {
+          return res.status(404).send({
+              message: "note not found with id " + req.params.noteId
+          });
+      }
+      return res.status(500).send({
+          message: "Error updating note with id " + req.params.noteId
+      });
+  });
+};
